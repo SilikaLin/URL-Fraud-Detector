@@ -3,7 +3,7 @@ function analisarURL(url) {
   const urlObj = new URL(url);
   const domain = urlObj.hostname;
 
-  // 🔹 Domínios confiáveis
+  // Domínios confiáveis
   const dominiosConfiaveis = [
     "google.com", "youtube.com", "facebook.com", "twitter.com",
     "wikipedia.org", "amazon.com", "linkedin.com", "microsoft.com",
@@ -14,28 +14,28 @@ function analisarURL(url) {
     return { risco: 0, motivo: "Domínio confiável" };
   }
 
-  // 🔹 Sem HTTPS
+  // Sem HTTPS
   if (urlObj.protocol !== "https:") score += 30;
 
-  // 🔹 Domínio muito longo
+  // Domínio muito longo
   if (domain.length > 25) score += 15;
 
-  // 🔹 Subdomínios excessivos
+  // Subdomínios excessivos
   if (domain.split(".").length > 3) score += 10;
 
-  // 🔹 Palavras suspeitas
+  // Palavras suspeitas
   const palavrasSuspeitas = [
     "login", "verify", "update", "free", "gift", "secure",
     "password", "bank", "wallet", "account", "signin", "win"
   ];
   if (palavrasSuspeitas.some(p => url.toLowerCase().includes(p))) score += 20;
 
-  // 🔹 Caracteres estranhos ou domínios suspeitos
+  //  Caracteres estranhos ou domínios suspeitos
   if (domain.includes("--") || domain.match(/[0-9]{3,}/) ||
       domain.endsWith(".xyz") || domain.endsWith(".ru"))
     score += 20;
 
-  // 🔹 URLs curtas mas sem HTTPS
+  // URLs curtas mas sem HTTPS
   if (url.length < 20 && urlObj.protocol !== "https:") score += 15;
 
   if (score >= 50) return { risco: score, motivo: "Possível fraude" };
@@ -43,7 +43,7 @@ function analisarURL(url) {
   return { risco: score, motivo: "Provavelmente seguro" };
 }
 
-// 🔍 Detecta troca de URL e atualiza ícone conforme risco
+// Detecta troca de URL e atualiza ícone conforme risco
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.url) {
     const resultado = analisarURL(changeInfo.url);
